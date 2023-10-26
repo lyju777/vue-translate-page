@@ -1,9 +1,11 @@
 import axios from 'axios';
 
 const instance = axios.create({
-    baseURL: ''
-  })
+  baseURL: '',
+});
 
- export function Papago(){
+function Papago() {
+  return 0;
+}
 
-  }
+export { Papago };
