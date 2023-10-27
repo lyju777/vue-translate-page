@@ -9,13 +9,13 @@ import axios from 'axios';
 const PROXY = window.location.hostname === 'localhost' ? '' : '/proxy';
 const URL = `${PROXY}/v1/papago/n2mt`;
 
-const instance = axios.create({
-  headers: {
-    'content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-    'X-Naver-Client-Id': 'S0QZyjNjOWxp302OBVpC',
-    'X-Naver-Client-Secret': 'XuG1Hn0PJ6',
-  },
-});
+// const instance = axios.create({
+//   headers: {
+//     'content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+//     'X-Naver-Client-Id': 'S0QZyjNjOWxp302OBVpC',
+//     'X-Naver-Client-Secret': 'XuG1Hn0PJ6',
+//   },
+// });
 
 export default {
   name: 'MainPage',
@@ -29,13 +29,20 @@ export default {
       },
     };
   },
-
+  // https://cors-anywhere.herokuapp.com/
   created() {
-    instance.post('https://openapi.naver.com/v1/papago/n2mt', {
+    axios({
+      method: 'post',
+      url: URL,
       data: {
         source: this.source,
         target: this.target,
         text: this.text,
+      },
+      headers: {
+        'content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+        'X-Naver-Client-Id': 'S0QZyjNjOWxp302OBVpC',
+        'X-Naver-Client-Secret': 'XuG1Hn0PJ6',
       },
     });
   },
