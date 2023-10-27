@@ -1,5 +1,10 @@
 <template>
-  <div>main</div>
+  <div>
+    <h1>main</h1>
+    <div>
+      <button @click="runPapago">클릭</button>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -32,24 +37,26 @@ export default {
   // https://cors-anywhere.herokuapp.com/
   // 'X-Naver-Client-Id': 'S0QZyjNjOWxp302OBVpC',
   // 'X-Naver-Client-Secret': 'XuG1Hn0PJ6',
-  created() {
-    axios({
-      method: 'post',
-      url: URL,
-      data: {
-        source: this.source,
-        target: this.target,
-        text: this.text,
-      },
-      headers: {
-        'content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-        'X-Naver-Client-Id': 'BNJBn1tGuOd7LB0hJTVL',
-        'X-Naver-Client-Secret': 'nt5JJKcSVV',
-      },
-    });
-  },
+  created() {},
 
-  methods: {},
+  methods: {
+    runPapago() {
+      axios({
+        method: 'post',
+        url: URL,
+        data: {
+          source: this.source,
+          target: this.target,
+          text: this.text,
+        },
+        headers: {
+          'content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+          'X-Naver-Client-Id': 'BNJBn1tGuOd7LB0hJTVL',
+          'X-Naver-Client-Secret': 'nt5JJKcSVV',
+        },
+      });
+    },
+  },
 };
 </script>
 
