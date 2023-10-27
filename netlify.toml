@@ -1,11 +1,5 @@
 [[redirects]]
-  from = "/papago/*"
-  to = "https://openapi.naver.com/v1/papago/n2mt"
+from = "/proxy/*"
+  to = "https://openapi.naver.com/:splat"  
   status = 200
   force = true
-  headers = {Content-Type = "application/x-www-form-urlencoded", "X-Naver-Client-Id" = "YOUR_NAVER_CLIENT_ID", "X-Naver-Client-Secret" = "YOUR_NAVER_CLIENT_SECRET"}
-
-[[headers]]
-  for = "/*"
-  [headers.values]
-    Access-Control-Allow-Origin = "*"
