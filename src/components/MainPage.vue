@@ -31,7 +31,7 @@ export default {
   },
 
   created() {
-    instance.post(URL, {
+    instance.post('https://openapi.naver.com/v1/papago/n2mt', {
       data: {
         source: this.source,
         target: this.target,
