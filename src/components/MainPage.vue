@@ -1,54 +1,33 @@
 <template>
-  <div>main</div>
+  <div>
+    <button @click="translateText">번역하기</button>
+    <div v-if="translatedText">{{ translatedText }}</div>
+  </div>
 </template>
 
 <script>
 import axios from 'axios';
-// import * as requestApi from '../api/requestAxios';
-
-const PROXY = window.location.hostname === 'localhost' ? '' : '/proxy';
-const URL = `${PROXY}/v1/papago/n2mt`;
-
-// const instance = axios.create({
-//   headers: {
-//     'content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-//     'X-Naver-Client-Id': 'S0QZyjNjOWxp302OBVpC',
-//     'X-Naver-Client-Secret': 'XuG1Hn0PJ6',
-//   },
-// });
 
 export default {
-  name: 'MainPage',
-
   data() {
     return {
-      data: {
-        source: 'ko',
-        target: 'en',
-        text: '파파고 테스트',
-      },
+      translatedText: '',
     };
   },
-  // https://cors-anywhere.herokuapp.com/
-  created() {
-    axios({
-      method: 'post',
-      url: URL,
-      data: {
-        source: this.source,
-        target: this.target,
-        text: this.text,
-      },
-      headers: {
-        'content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-        'X-Naver-Client-Id': 'S0QZyjNjOWxp302OBVpC',
-        'X-Naver-Client-Secret': 'XuG1Hn0PJ6',
-      },
-    });
-  },
+  methods: {
+    async translateText() {
+      try {
+        const response = await axios.post('/papago/n2mt', {
+          source: 'ko',
+          target: 'en',
+          text: '안녕하세요',
+        });
 
-  methods: {},
+        this.translatedText = response.data.message.result.translatedText;
+      } catch (error) {
+        console.error('Error translating text:', error);
+      }
+    },
+  },
 };
 </script>
-
-<style lang="scss" scoped></style>
