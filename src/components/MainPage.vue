@@ -43,7 +43,7 @@ export default {
     runPapago() {
       axios({
         method: 'post',
-        url: URL,
+        url: 'https://openapi.naver.com/v1/papago/n2mt',
         data: {
           source: this.source,
           target: this.target,
@@ -54,7 +54,13 @@ export default {
           'X-Naver-Client-Id': 'BNJBn1tGuOd7LB0hJTVL',
           'X-Naver-Client-Secret': 'nt5JJKcSVV',
         },
-      });
+      })
+        .then((response) => {
+          console.log(response);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
   },
 };
