@@ -17,6 +17,7 @@
     <section class="container___3EGm5">
       <div class="content___jjEJ5 scroll">
         <div class="rwd_layout___2qH8c">
+          <!-- 왼쪽 번역 div -->
           <div class="rwd_box___1ysJh">
             <div class="translate_area___3xdxa">
               <div class="lang_select___3h6b5">
@@ -44,18 +45,33 @@
                     <option value="ru">러시아어</option>
                     <option value="it">이탈리아어</option>
                   </select>
+                  <button class="btn_switch___x4Tcl" type="button"></button>
                 </div>
               </div>
+              <!-- textarea -->
               <div class="textarea_div">
                 <textarea
+                  @input="handleResizeHeight"
+                  ref="textArea"
+                  style="resize: none; height: 50px"
                   v-model="data.text"
                   class="textarea_inner"
                   placeholder="번역할 내용을 입력하세요."
-                  id=""
-                  cols="300"
-                  rows="10"
-                ></textarea>
+                  rows="1"
+                  maxlength="3000"
+                >
+번역할 내용을 입력하세요.</textarea
+                >
+                <button type="button">
+                  <img
+                    v-if="showDeleteBtn"
+                    class="btn_text_clse___1Bp8a active___3VPGL"
+                    src="../assets/X.png"
+                    alt="입력 텍스트 삭제"
+                  />
+                </button>
               </div>
+              <!-- 왼쪽 번역 div 하단 -->
               <div class="btn_toolbar___20tub">
                 <div class="btn_translation___b0nPG">
                   <button class="btn_text___3-laJ" @click="runPapago">
@@ -93,6 +109,12 @@ export default {
   },
   created() {},
 
+  computed: {
+    showDeleteBtn() {
+      return this.data.text === '' || null ? false : true;
+    },
+  },
+
   methods: {
     runPapago() {
       axios({
@@ -117,13 +139,22 @@ export default {
           console.log(error);
         });
     },
+
+    handleResizeHeight() {
+      this.$refs.textArea.style.height = 'auto';
+      this.$refs.textArea.style.height =
+        this.$refs.textArea.scrollHeight + 'px';
+    },
   },
 };
 </script>
 
 <style lang="scss" scoped>
-button {
+button,
+select,
+a {
   cursor: pointer;
+  outline: 0;
 }
 
 .main_layout {
@@ -206,7 +237,7 @@ button {
       float: left;
       font-size: 2em;
       border: none;
-      margin-top: 10px;
+      margin-top: 9px;
       margin-left: 15px;
     }
 
@@ -221,8 +252,6 @@ button {
       backface-visibility: hidden;
       background-color: transparent;
       border: 0;
-      color: #999;
-      font-size: 40px;
       line-height: 1.26em;
       min-height: 39px;
       overflow: hidden;
@@ -262,6 +291,34 @@ button {
       width: 144px;
       color: white;
       border-bottom-right-radius: 12px;
+    }
+
+    .btn_switch___x4Tcl {
+      background: url(https://papago.naver.com/3a3d38cf35ead812d0326007a76bf7ad.png)
+        50% 50% no-repeat;
+      background-color: transparent;
+      background-size: 23px 20px;
+      height: 60px;
+      overflow: hidden;
+      position: relative;
+      width: 64px;
+      float: right;
+    }
+
+    .btn_text_clse___1Bp8a {
+      // background-image: url(https://papago.naver.com/bc7a00ca5cd4440758640c638a511d1d.png);
+      // background-position: 6px -68px;
+      // background-repeat: no-repeat;
+      // background-size: 300px 450px;
+      position: absolute;
+      right: 21px;
+      top: 44px;
+    }
+
+    .active___3VPGL {
+      width: 17px;
+      filter: opacity(0.3) drop-shadow(0 0 0 hsl(0, 0%, 79%));
+      display: block;
     }
   }
 }
