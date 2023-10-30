@@ -25,7 +25,9 @@
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-import": "^2.29.0",
     "eslint-plugin-vue": "^9.18.0",
+    "node-sass": "^9.0.0",
     "prettier": "^3.0.3",
+    "sass-loader": "^13.3.2",
     "vue-template-compiler": "^2.6.14"
   },
   "eslintConfig": {
@@ -47,5 +49,5 @@
     "last 2 versions",
     "not dead"
   ],
-  "proxy": "https://openapi.naver.com" 
+  "proxy": "https://openapi.naver.com"
 }

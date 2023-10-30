@@ -9,9 +9,12 @@
 
 module.exports = {
   devServer: {
+    client: {
+      overlay: false
+    },
     proxy: {
-      '/v1': {
-        target: 'https://openapi.naver.com/',
+      '/translator': {
+        target: 'http://52.79.60.180:8080',
         changeOrigin: true,
       },
     },
