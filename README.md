@@ -1,4 +1,3 @@
-# papago-page
 
 ## Project setup
 ```
