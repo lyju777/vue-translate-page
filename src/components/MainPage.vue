@@ -23,6 +23,7 @@
               <div class="lang_select___3h6b5">
                 <div class="lang_select_inner_div">
                   <select
+                    @change="saveDataSource"
                     v-model="data.source"
                     class="lang_select_inner_select"
                   >
@@ -45,24 +46,25 @@
                     <option value="ru">러시아어</option>
                     <option value="it">이탈리아어</option>
                   </select>
-                  <button class="btn_switch___x4Tcl" type="button"></button>
+                  <button
+                    @click="onChangeTranslate"
+                    class="btn_switch___x4Tcl"
+                    type="button"
+                  ></button>
                 </div>
               </div>
               <!-- textarea -->
               <div class="textarea_div">
-                <textarea
+                <textarea-autosize
                   @input="handleResizeHeight"
                   ref="textArea"
-                  style="resize: none; height: 50px"
                   v-model="data.text"
                   class="textarea_inner"
                   placeholder="번역할 내용을 입력하세요."
                   rows="1"
                   maxlength="3000"
-                >
-번역할 내용을 입력하세요.</textarea
-                >
-                <button type="button">
+                ></textarea-autosize>
+                <button type="button" @click="deleteText">
                   <img
                     v-if="showDeleteBtn"
                     class="btn_text_clse___1Bp8a active___3VPGL"
@@ -70,6 +72,10 @@
                     alt="입력 텍스트 삭제"
                   />
                 </button>
+                <p class="text_count___AKP5b">
+                  <span>{{ textCount }}</span
+                  >&nbsp;/&nbsp;<span>3000</span>
+                </p>
               </div>
               <!-- 왼쪽 번역 div 하단 -->
               <div class="btn_toolbar___20tub">
@@ -77,6 +83,73 @@
                   <button class="btn_text___3-laJ" @click="runPapago">
                     번역하기
                   </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 오른쪽 번역 div -->
+          <div class="rwd_box___1ysJh">
+            <div class="translate_area___3xdxa">
+              <div class="lang_select___3h6b5">
+                <div class="lang_select_inner_div">
+                  <select
+                    @change="saveDataTarget"
+                    v-model="data.target"
+                    class="lang_select_inner_select"
+                  >
+                    <option value="ko">한국어</option>
+                    <option value="ja">일본어</option>
+                    <option value="zh-CN">중국어(간체)</option>
+                    <option value="zh-TW">중국어(번체)</option>
+                    <option value="hi">힌디어</option>
+                    <option value="en">영어</option>
+                    <option value="es">스페인어</option>
+                    <option value="fr">프랑스어</option>
+                    <option value="de">독일어</option>
+                    <option value="pt">포르투갈어</option>
+                    <option value="vi">베트남어</option>
+                    <option value="id">인도네시아어</option>
+                    <option value="fa">페르시아어</option>
+                    <option value="ar">아랍어</option>
+                    <option value="mm">미얀마어</option>
+                    <option value="th">태국어</option>
+                    <option value="ru">러시아어</option>
+                    <option value="it">이탈리아어</option>
+                  </select>
+                  <!-- <button class="btn_switch___x4Tcl" type="button"></button> -->
+                </div>
+              </div>
+              <!-- textarea -->
+              <div class="textarea_div">
+                <textarea-autosize
+                  @input="handleInput"
+                  ref="textArea"
+                  v-model="translateData"
+                  class="textarea_inner"
+                  rows="0"
+                  maxlength="0"
+                  minlength="0"
+                ></textarea-autosize>
+                <!-- <button type="button" @click="deleteText">
+                  <img
+                    v-if="showDeleteBtn"
+                    class="btn_text_clse___1Bp8a active___3VPGL"
+                    src="../assets/X.png"
+                    alt="입력 텍스트 삭제"
+                  />
+                </button> -->
+                <!-- <p class="text_count___AKP5b">
+                  <span>{{ textCount }}</span
+                  >&nbsp;/&nbsp;<span>3000</span>
+                </p> -->
+              </div>
+              <!-- 오른쪽 번역 div 하단 -->
+              <div class="btn_toolbar___20tub">
+                <div class="btn_translation___b0nPG">
+                  <!-- <button class="btn_text___3-laJ" @click="runPapago">
+                    번역하기
+                  </button> -->
                 </div>
               </div>
             </div>
@@ -99,12 +172,20 @@ export default {
   data() {
     return {
       data: {
+        source: 'ko', //원본 언어(source language)의 언어 코드
+        target: 'en', // 목적 언어(target language)의 언어 코드
+        text: '', // 번역할 텍스트
+      },
+
+      saveData: {
         source: 'ko',
         target: 'en',
         text: '',
+        translateData: '',
       },
 
-      responseData: '',
+      translateData: '', // 번역된 텍스트
+      textCount: 0, // 텍스트 글자 수
     };
   },
   created() {},
@@ -132,7 +213,9 @@ export default {
         },
       })
         .then((response) => {
-          this.responseData = response.data;
+          this.translateData = response.data;
+          this.saveData.text = this.data.text;
+          this.saveData.translateData = this.translateData;
           console.log(response);
         })
         .catch((error) => {
@@ -141,15 +224,45 @@ export default {
     },
 
     handleResizeHeight() {
-      this.$refs.textArea.style.height = 'auto';
-      this.$refs.textArea.style.height =
-        this.$refs.textArea.scrollHeight + 'px';
+      this.textCount = this.data.text.length;
+    },
+
+    deleteText() {
+      this.data.text = '';
+      this.translateData = '';
+      this.textCount = 0;
+    },
+
+    onChangeTranslate() {
+      // source , target 스왑
+      this.data.source = this.saveData.target;
+      this.data.target = this.saveData.source;
+      this.saveDataTarget();
+      this.saveDataSource();
+
+      // text , translateData 스왑
+      this.data.text = this.saveData.translateData;
+      this.translateData = this.saveData.text;
+      this.saveData.text = this.data.text;
+      this.saveData.translateData = this.translateData;
+    },
+
+    saveDataSource() {
+      this.saveData.source = this.data.source;
+    },
+
+    saveDataTarget() {
+      this.saveData.target = this.data.target;
     },
   },
 };
 </script>
 
 <style lang="scss" scoped>
+// textarea {
+//   caret-color: transparent;
+// }
+
 button,
 select,
 a {
@@ -244,6 +357,7 @@ a {
     .textarea_div {
       padding: 28px 20px 63px;
       position: relative;
+      // height: 30vh;
     }
 
     .textarea_inner {
@@ -253,7 +367,7 @@ a {
       background-color: transparent;
       border: 0;
       line-height: 1.26em;
-      min-height: 39px;
+      min-height: 220px;
       overflow: hidden;
       resize: none;
       transform: translateZ(0);
@@ -311,14 +425,22 @@ a {
       // background-repeat: no-repeat;
       // background-size: 300px 450px;
       position: absolute;
-      right: 21px;
+      right: 15px;
       top: 44px;
     }
 
     .active___3VPGL {
       width: 17px;
-      filter: opacity(0.3) drop-shadow(0 0 0 hsl(0, 0%, 79%));
+      filter: opacity(0.3) drop-shadow(0 0 0 #a0a0a0);
       display: block;
+    }
+
+    .text_count___AKP5b {
+      position: absolute;
+      right: 23px;
+      color: #a0a0a0;
+      font-size: 18px;
+      // line-height: 483px;
     }
   }
 }
