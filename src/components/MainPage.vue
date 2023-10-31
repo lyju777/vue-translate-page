@@ -163,8 +163,8 @@
 <script>
 import axios from 'axios';
 
-// const PROXY = window.location.hostname === 'localhost' ? '' : '/proxy';
-// const URL = `${PROXY}/v1/papago/n2mt`;
+const PROXY = window.location.hostname === 'localhost' ? '' : '/proxy';
+const URL = `${PROXY}/translator/getPapago`;
 
 export default {
   name: 'MainPage',
@@ -200,7 +200,7 @@ export default {
     runPapago() {
       axios({
         method: 'post',
-        url: '/translator/getPapago',
+        url: URL,
         data: {
           source: this.data.source,
           target: this.data.target,
