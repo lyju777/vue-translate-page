@@ -422,7 +422,7 @@ a {
     margin: 15px 7px !important;
   }
 
-  .content___jjEJ5 scroll {
+  .content___jjEJ5 {
     padding: 363px 7px 80px !important;
   }
   .textarea_inner {
