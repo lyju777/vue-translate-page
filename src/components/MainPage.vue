@@ -62,7 +62,6 @@
                   class="textarea_inner"
                   placeholder="번역할 내용을 입력하세요."
                   rows="1"
-                  maxlength="3000"
                 ></textarea-autosize>
                 <button type="button" @click="deleteText">
                   <img
@@ -73,8 +72,7 @@
                   />
                 </button>
                 <p class="text_count___AKP5b">
-                  <span>{{ textCount }}</span
-                  >&nbsp;/&nbsp;<span>3000</span>
+                  <span v-if="this.textCount !== 0">{{ textCount }}자</span>
                 </p>
               </div>
               <!-- 왼쪽 번역 div 하단 -->
@@ -117,13 +115,11 @@
                     <option value="ru">러시아어</option>
                     <option value="it">이탈리아어</option>
                   </select>
-                  <!-- <button class="btn_switch___x4Tcl" type="button"></button> -->
                 </div>
               </div>
               <!-- textarea -->
               <div class="textarea_div">
                 <textarea-autosize
-                  @input="handleInput"
                   ref="textArea"
                   v-model="translateData"
                   class="textarea_inner"
@@ -131,26 +127,10 @@
                   maxlength="0"
                   minlength="0"
                 ></textarea-autosize>
-                <!-- <button type="button" @click="deleteText">
-                  <img
-                    v-if="showDeleteBtn"
-                    class="btn_text_clse___1Bp8a active___3VPGL"
-                    src="../assets/X.png"
-                    alt="입력 텍스트 삭제"
-                  />
-                </button> -->
-                <!-- <p class="text_count___AKP5b">
-                  <span>{{ textCount }}</span
-                  >&nbsp;/&nbsp;<span>3000</span>
-                </p> -->
               </div>
               <!-- 오른쪽 번역 div 하단 -->
               <div class="btn_toolbar___20tub">
-                <div class="btn_translation___b0nPG">
-                  <!-- <button class="btn_text___3-laJ" @click="runPapago">
-                    번역하기
-                  </button> -->
-                </div>
+                <div class="btn_translation___b0nPG"></div>
               </div>
             </div>
           </div>
@@ -259,10 +239,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-// textarea {
-//   caret-color: transparent;
-// }
-
 button,
 select,
 a {
@@ -357,7 +333,6 @@ a {
     .textarea_div {
       padding: 28px 20px 63px;
       position: relative;
-      // height: 30vh;
     }
 
     .textarea_inner {
@@ -389,7 +364,6 @@ a {
 
     .btn_translation___b0nPG {
       left: 320px;
-      position: absolute;
       right: -1px;
       text-align: right;
       top: -1px;
@@ -420,10 +394,6 @@ a {
     }
 
     .btn_text_clse___1Bp8a {
-      // background-image: url(https://papago.naver.com/bc7a00ca5cd4440758640c638a511d1d.png);
-      // background-position: 6px -68px;
-      // background-repeat: no-repeat;
-      // background-size: 300px 450px;
       position: absolute;
       right: 15px;
       top: 44px;
@@ -440,8 +410,24 @@ a {
       right: 23px;
       color: #a0a0a0;
       font-size: 18px;
-      // line-height: 483px;
     }
+  }
+}
+
+@media only screen and (max-width: 767px) {
+  .rwd_box___1ysJh {
+    display: inline !important;
+  }
+  .translate_area___3xdxa {
+    margin: 15px 7px !important;
+  }
+
+  .content___jjEJ5 scroll {
+    padding: 363px 7px 80px !important;
+  }
+  .textarea_inner {
+    font-size: 25px !important;
+    width: 92% !important;
   }
 }
 </style>
